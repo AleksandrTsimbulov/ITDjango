@@ -8,3 +8,6 @@ urlpatterns = [
     path('<slug:id>/', articles_detail, name='articles_detail'),
     # path('archive/<int:year>', some_view)  # in case we want to add archive by year
 ]
+
+def me():
+    pass
