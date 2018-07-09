@@ -6,6 +6,3 @@ from catalog.models import Article
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     pass
-
-def difn():
-    pass
