@@ -3,17 +3,16 @@ from django.http import HttpResponse, HttpRequest
 from catalog.models import Article
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_http_methods
+import datetime
 
 
 # Create your views here.
 def home(request: HttpRequest) -> HttpResponse:
-    articles = Article.objects.all()
-    return render(request, 'index.html', {
-        'articles': articles,
-    }, content_type='text/plain')
+    current_time = datetime.date.today().isoformat()
+    return HttpResponse(current_time, content_type='text/plain')
 
 
-@require_http_methods(['GET', 'POST']) # not sure how to use it yet
+@require_http_methods(['GET', 'POST'])  # not sure how to use it yet
 def articles_list(request):
     print(request.GET.getlist('name'))
     return HttpResponse('Список статей')
@@ -34,5 +33,28 @@ def handler404(request, *args, **kwargs):
     return HttpResponse('Не найдено', status=404)
 
 
+def handler400(request, *args, **kwargs):
+    return HttpResponse('Неизвестная операция или деление на ноль', status=400)
+
+
 def articles_redirect(request):
     return redirect('articles_detail', id=10)
+
+
+@require_http_methods(['GET'])
+def calculate(request):
+    operation = request.GET['op']
+    left_oparand = int(request.GET['left'])
+    right_operand = int(request.GET['right'])
+    print(request.GET, operation, left_oparand, right_operand)
+    if operation == '+' or ' ':
+        result = left_oparand + right_operand
+    elif operation == '-':
+        result = left_oparand - right_operand
+    elif operation == '*':
+        result = left_oparand * right_operand
+    elif operation == '/' and right_operand != 0:
+        result = left_oparand / right_operand
+    else:
+        return handler400(request)
+    return HttpResponse(result)

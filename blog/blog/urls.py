@@ -1,4 +1,4 @@
-"""progs URL Configuration
+"""blog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -15,16 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from catalog.views import home, articles_redirect, calculate
 
 urlpatterns = [
-    path('', home),
     path('admin/', admin.site.urls),
-    path('calculate/', calculate),
-    path('articles/', articles_redirect),
-    path('articles/old/', include('catalog.urls')),  # module name url patterns are imported from
+    path('articles/', include('articles.urls')),
 ]
-
-handler404 = 'catalog.views.handler404'
-handler400 = 'catalog.views.handler400'
-
